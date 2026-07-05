@@ -1,7 +1,8 @@
 from django.urls import path
 
-from .views import RegistrationView
+from .views import LoginView, RegistrationView
 
-urlpatterns = [                                                                 # Definiert die URL-Muster für die Authentifizierungs-API. Es enthält eine Route für die Benutzerregistrierung, die auf die RegistrationView verweist.
+urlpatterns = [
     path("registration/", RegistrationView.as_view()),
+    path("login/", LoginView.as_view()),
 ]
