@@ -11,6 +11,12 @@ class Profile(models.Model):                                                # Er
         User, on_delete=models.CASCADE, related_name="profile"              # Wird ein User gelöscht, verschwindet automatisch auch sein Profil
     )
     type = models.CharField(max_length=10, choices=ProfileType.choices)     # Der Typ des Profils wird als CharField gespeichert, wobei die Auswahlmöglichkeiten aus der ProfileType-Klasse stammen.
+    file = models.CharField(max_length=255, blank=True, null=True)
+    location = models.CharField(max_length=255, blank=True, null=True)
+    tel = models.CharField(max_length=20, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    working_hours = models.CharField(max_length=100, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     class Meta:                                                             # Meta-Informationen für das Model
         verbose_name = "Profile"
