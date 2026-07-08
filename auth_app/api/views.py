@@ -1,26 +1,26 @@
-from rest_framework import status
-from rest_framework.permissions import AllowAny
-from rest_framework.views import APIView
+from rest_framework import status                                                # HTTP Status-Codes (z.B. 201, 200)
+from rest_framework.permissions import AllowAny                                  # Erlaubt jedem Zugriff (auch ohne Authentifizierung) = AllowAny
+from rest_framework.views import APIView                                         # Basis-Klasse für API-Endpoints
 
-from .serializers import LoginSerializer, RegistrationSerializer
-from .utils import build_token_response
-
-
-class RegistrationView(APIView):
-    permission_classes = [AllowAny]
-
-    def post(self, request):                                                    # Registriert einen neuen Benutzer. Es validiert die Eingabedaten mithilfe des RegistrationSerializers, erstellt einen neuen Benutzer und ein zugehöriges Profil und gibt eine Antwort mit einem Authentifizierungstoken zurück.
-        serializer = RegistrationSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-        return build_token_response(user, status.HTTP_201_CREATED)
+from .serializers import LoginSerializer, RegistrationSerializer                 # Serializer für Validierung und Datenumwandlung
+from .utils import build_token_response                                          # Hilfsfunktion zum Erstellen der Token-Response
 
 
-class LoginView(APIView):
-    permission_classes = [AllowAny]
+class RegistrationView(APIView):                                                 # View für Benutzer-Registrierung
+    permission_classes = [AllowAny]                                              # Jeder darf registrieren (ohne Login erforderlich)
 
-    def post(self, request):                                                    # Meldet einen Benutzer an. Es validiert die Eingabedaten mithilfe des LoginSerializers, authentifiziert den Benutzer und gibt eine Antwort mit einem Authentifizierungstoken zurück.
-        serializer = LoginSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data["user"]
-        return build_token_response(user, status.HTTP_200_OK)
+    def post(self, request):                                                     # POST-Endpoint für neue Benutzer
+        serializer = RegistrationSerializer(data=request.data)                   # Validiere die Eingabedaten (username, email, password)
+        serializer.is_valid(raise_exception=True)                                # Prüfe die Daten, wirf Fehler aus wenn ungültig
+        user = serializer.save()                                                 # Speichere den neuen Benutzer und Profil in der Datenbank
+        return build_token_response(user, status.HTTP_201_CREATED)               # Gib Token zurück mit Status 201 (Created)
+
+
+class LoginView(APIView):                                                        # View für Benutzer-Anmeldung
+    permission_classes = [AllowAny]                                              # Jeder darf sich anmelden (ohne vorherigen Login)
+
+    def post(self, request):                                                     # POST-Endpoint für Anmeldung
+        serializer = LoginSerializer(data=request.data)                          # Validiere die Anmeldedaten (username, password)
+        serializer.is_valid(raise_exception=True)                                # Prüfe die Daten, wirf Fehler wenn ungültig
+        user = serializer.validated_data["user"]                                 # Hole den authentifizierten Benutzer
+        return build_token_response(user, status.HTTP_200_OK)                    # Gib Token zurück mit Status 200 (OK)
