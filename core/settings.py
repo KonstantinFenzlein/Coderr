@@ -40,8 +40,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'django_filters',                                                   # Für erweiterte Filterung
     'profile_app',
     'auth_app',
+    'offer_app',
 ]
 
 MIDDLEWARE = [
@@ -133,6 +135,11 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_FILTER_BACKENDS': [                                              # Aktiviere Filter-Backends global
+        'django_filters.rest_framework.DjangoFilterBackend',                   # Für Custom Filter (creator_id, min_price, max_delivery_time)
+        'rest_framework.filters.SearchFilter',                                # Für Suchfunktionalität
+        'rest_framework.filters.OrderingFilter',                              # Für Sortierung
     ],
 }
 
