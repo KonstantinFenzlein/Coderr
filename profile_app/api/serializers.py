@@ -57,3 +57,59 @@ class ProfileSerializer(serializers.Serializer):                                
         instance.save()                                                         # Speichere alle Änderungen am Profil
 
         return instance                                                         # Gib das aktualisierte Profil-Objekt zurück
+
+
+class BusinessProfileListSerializer(serializers.Serializer):                    # Serializer speziell für die Liste von Geschäftsprofilen, optimiert für Listenansicht
+    # Alle Felder für die Listenansicht
+    user = serializers.IntegerField(read_only=True)                             # Benutzer-ID, nur lesbar
+    username = serializers.CharField(read_only=True)                            # Benutzername, nur lesbar
+    first_name = serializers.CharField(read_only=True)                          # Vorname, nur lesbar
+    last_name = serializers.CharField(read_only=True)                           # Nachname, nur lesbar
+    file = serializers.CharField(read_only=True)                                # Profilbild, nur lesbar
+    location = serializers.CharField(read_only=True)                            # Ort, nur lesbar
+    tel = serializers.CharField(read_only=True)                                 # Telefon, nur lesbar
+    description = serializers.CharField(read_only=True)                         # Beschreibung, nur lesbar
+    working_hours = serializers.CharField(read_only=True)                       # Arbeitszeiten, nur lesbar
+    type = serializers.CharField(read_only=True)                                # Profiltyp, nur lesbar
+
+    def to_representation(self, instance):                                      # Methode wird aufgerufen wenn Profildaten in JSON für die Liste umgewandelt werden
+        return {                                                                 # Erstelle ein Wörterbuch mit allen Geschäftsnutzer-Feldern
+            'user': instance.user.id,                                           # Benutzer-ID vom verbundenen Benutzer
+            'username': instance.user.username,                                 # Benutzername vom verbundenen Benutzer
+            'first_name': instance.user.first_name or '',                       # Vorname vom Benutzer, Null → ''
+            'last_name': instance.user.last_name or '',                         # Nachname vom Benutzer, Null → ''
+            'file': instance.file or '',                                        # Datei vom Profil, Null → ''
+            'location': instance.location or '',                                # Ort vom Profil, Null → ''
+            'tel': instance.tel or '',                                          # Telefon vom Profil, Null → ''
+            'description': instance.description or '',                          # Beschreibung vom Profil, Null → ''
+            'working_hours': instance.working_hours or '',                      # Arbeitszeiten vom Profil, Null → ''
+            'type': instance.type,                                              # Profiltyp vom Profil
+        }
+
+
+class CustomerProfileListSerializer(serializers.Serializer):                    # Serializer speziell für die Liste von Kundenprofilen, optimiert für Listenansicht
+    # Alle Felder für die Listenansicht
+    user = serializers.IntegerField(read_only=True)                             # Benutzer-ID, nur lesbar
+    username = serializers.CharField(read_only=True)                            # Benutzername, nur lesbar
+    first_name = serializers.CharField(read_only=True)                          # Vorname, nur lesbar
+    last_name = serializers.CharField(read_only=True)                           # Nachname, nur lesbar
+    file = serializers.CharField(read_only=True)                                # Profilbild, nur lesbar
+    location = serializers.CharField(read_only=True)                            # Ort, nur lesbar
+    tel = serializers.CharField(read_only=True)                                 # Telefon, nur lesbar
+    description = serializers.CharField(read_only=True)                         # Beschreibung, nur lesbar
+    working_hours = serializers.CharField(read_only=True)                       # Arbeitszeiten, nur lesbar
+    type = serializers.CharField(read_only=True)                                # Profiltyp, nur lesbar
+
+    def to_representation(self, instance):                                      # Methode wird aufgerufen wenn Profildaten in JSON für die Liste umgewandelt werden
+        return {                                                                 # Erstelle ein Wörterbuch mit allen Kundenprofil-Feldern
+            'user': instance.user.id,                                           # Benutzer-ID vom verbundenen Benutzer
+            'username': instance.user.username,                                 # Benutzername vom verbundenen Benutzer
+            'first_name': instance.user.first_name or '',                       # Vorname vom Benutzer, Null → ''
+            'last_name': instance.user.last_name or '',                         # Nachname vom Benutzer, Null → ''
+            'file': instance.file or '',                                        # Datei vom Profil, Null → ''
+            'location': instance.location or '',                                # Ort vom Profil, Null → ''
+            'tel': instance.tel or '',                                          # Telefon vom Profil, Null → ''
+            'description': instance.description or '',                          # Beschreibung vom Profil, Null → ''
+            'working_hours': instance.working_hours or '',                      # Arbeitszeiten vom Profil, Null → ''
+            'type': instance.type,                                              # Profiltyp vom Profil
+        }
